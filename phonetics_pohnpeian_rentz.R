@@ -1,5 +1,5 @@
 ### Code by: Bradley Rentz
-### Script for Phonetic Structures of Pohnpeian, Bradley Rentz and Victoria Anderson, 2017
+### R Script for Phonetic Structures of Pohnpeian, Bradley Rentz and Victoria Anderson, 2017
 ### Mac OS 10.10.5
 ### Base R version 3.2.2 "Fire Safety"
 ### lmerTest version 2.0-30 (lme4 version 1.1-12)
@@ -48,7 +48,7 @@ set.seed (3875)
 # g. post hoc tests if applicable
 # h. display plotting of data (as needed)
 
-setwd("~/Documents/UH/QP/qp1_data/results")
+setwd("~/Documents/UH/QP/qp1_data/results") # change this to your wd
 ################################################ Begin Geminate Section #################################
 #load geminate data (303 obs)
 geminates <- read.csv("geminates.csv")
@@ -599,8 +599,6 @@ locus_f2ss
 
 
 
-(locus_f2ss_plotly <- ggplotly(locus_f2ss))
-plotly_POST(locus_f2ss_plotly, filename = "locus_f2ss", sharing="public")
 
 #plotting the lms
 locus_plots<-ggplot(NULL, aes(y=f2i, x=f2ss, color=consonant, shape=consonant, linetype=consonant)) + 
@@ -622,8 +620,6 @@ locus_plots<-ggplot(NULL, aes(y=f2i, x=f2ss, color=consonant, shape=consonant, l
   #guides(shape=F)+
   theme(legend.position=c(.8,0.3))
 
-(locus_plots_plotly <- ggplotly(locus_plots))
-plotly_POST(locus_plots, filename = "locus_plots", sharing="public")
 
 t_locus_means <- t_locus_clean %>%
   group_by(consonant) %>%
@@ -819,9 +815,7 @@ vot_plot<- ggplot(NULL, aes(x=consonant2,y=vot)) +
   theme_bw() + 
   ylab("VOT (s)") + xlab("consonant")
 
-(vot_plot_plotly <- ggplotly(vot_plot))
-plotly_POST(vot_plot_plotly, filename = "vot_plot", sharing="public")
-  
+ 
 
 #lmers
 #full model
@@ -1314,8 +1308,6 @@ frication.clean.skew.blmer = stan_lmer(skewness ~ consonant + (1+consonant|speak
                                       iter = 2000)
 
 blmer_skew_plot<- plot(frication.clean.skew.blmer,pars=c("(Intercept)","consonantt","consonantt̻"))
-(blmer_skew_plot_plotly <- ggplotly(blmer_skew_plot))
-plotly_POST(blmer_skew_plot_plotly, filename = "blmer_skew_plot", sharing="public")
 
 sink("sink-summary-blmer-skew.txt")
 print(summary(frication.clean.skew.blmer),digits=3)
@@ -1340,12 +1332,11 @@ summary(glht(frication.clean.cog.lmer, linfct=mcp(consonant = "Tukey")), test=ad
 cog_plot<- ggplot(frication.clean,aes(x=consonant,y=cog)) + geom_boxplot() +
   ylab("Center of gravity (Hz)") + theme_bw()
 
-(cog_plot_plotly <- ggplotly(cog_plot))
-plotly_POST(cog_plot_plotly, filename = "cog_plot", sharing="public")
+
+
 # skewness
 skewness_plot<-ggplot(frication.clean,aes(x=consonant,y=skewness)) + geom_boxplot() + theme_bw()
-(skewness_plot_plotly <- ggplotly(skewness_plot))
-plotly_POST(skewness_plot_plotly, filename = "skewness_plot", sharing="public")
+
 
 pirateplot(skewness~consonant,data=frication,inf="hdi",theme=3,hdi.iter=50000,avg.line.fun = median,ylab="Skewness",gl.col = "white",xlab="Consonant",pal="gray",bean.f.col=c("purple","seagreen4","skyblue"))
 pirateplot(cog~consonant,data=frication,inf="hdi",theme=3,hdi.iter=50000,avg.line.fun = median,ylab="Center of Gravity (Hz)",gl.col = "white",xlab="Consonant",pal="gray",bean.f.col=c("purple","seagreen4","skyblue"))
